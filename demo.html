@@ -13,15 +13,18 @@
   var clicker = protozoa({
     tag: "div",
     id: "clicker",
+
+    // Define an update function for rendering if you want
+    update: function () {
+      var state = this.store.getState();
+      this.container.count.children = [state.count.toString()];
+      this.container.input.value = state.count.toString();
+      return true;
+    },
+
+    // Init function runs right after the node is created
     init: function () {
       var cmp = this;
-
-      // Define an update function right here if you want
-      var update = function (state) {
-        cmp.container.count.children = [state.count.toString()];
-        cmp.container.input.value = state.count.toString();
-        return true;
-      }
 
       // Embed a flux store in this DOM Node, why not?
       cmp.store = sf.createStore({ count: 0 }, function (state, action) {
@@ -29,10 +32,10 @@
           case "CLICK":
           case "RESET":
             state.count = action.type === "RESET" ? 0 : state.count + 1;
-            return update(state);
+            return cmp.update();
           case "COUNT_SET":
             state.count = action.value;
-            return update(state);
+            return cmp.update();
         }
       });
     },
