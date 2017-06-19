@@ -9,7 +9,7 @@ See [demo.html](demo.html) for an ES5 example. Also available on NPM.
 The protozoa module itself is just one factory function that is called with a template. Calling it looks like this:
 
 ```js
-var el = protozoa({
+var element = protozoa({
   tag: "div",
   children: [
     "Hello ",
@@ -30,14 +30,14 @@ The template API borrows heavily from [cell](https://www.celljs.org/). All prope
 The function returns an ordinary DOM Node with a few additions. You can append this Node anywhere in your HTML page:
 
 ```js
-document.body.appendChild(el);
+document.body.appendChild(element);
 ```
 
 ### DOM Node API
 DOM Nodes returned by `protozoa` have a special array property `children` which controls the Node's contents. Assigning to this property will empty out the containing DOM node and append the new structure in its place:
 
 ```js
-el.children = ["Something Else"];
+element.children = ["Something Else"];
 ```
 
 That's pretty much it. All other properties are treated as native [IDL attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Content_versus_IDL_attributes) (with some special preprocessing for `class`/`className` and `style`). Including either `class` OR `className` will set the Node's `class` AND `className` attributes. Style has weird behavior and you can't use that property to store arbitrary strings. Properties not used by the browser are fair game for your functions, state objects, anything else your Node needs.
