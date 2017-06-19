@@ -1,13 +1,13 @@
-// Protozoa v0.1.0
+// Protozoa v0.1.2
 // MIT License
 // © 2017 Gus Cost
 
 var EMPTY = [];
-var RESERVED = /tag|ns|ref|init|children/;
+var RESERVED = /tag|ns|ref|children|init/;
 
 var protozoa = function (tmpl) {
 
-  // Create HTML node (from CellJS)
+  // Create HTML Node (adapted from https://github.com/intercellular/cell)
   var _node;
   if (typeof tmpl === "string") {
     _node = document.createTextNode(tmpl);
@@ -29,7 +29,7 @@ var protozoa = function (tmpl) {
     console.error("Unknown template: " + tmpl);
   }
 
-  // Set all non-reserved properties on the node
+  // Set all non-reserved properties on the Node
   if (typeof tmpl === "object") {
     Object.getOwnPropertyNames(tmpl).forEach(function (key) {
       if (key === "class" || key === "className") {
@@ -57,12 +57,15 @@ var protozoa = function (tmpl) {
     }
   });
 
-  // Set reserved properties and run init()
+  // Set reserved properties and run `init()`
+  _node.tag = tmpl.tag;
+  _node.ns = tmpl.ns;
+  _node.ref = tmpl.ref;
+  _node.children = tmpl.children || EMPTY;
   if (tmpl.init) {
     _node.init = tmpl.init.bind(_node);
     _node.init();
   }
-  _node.children = tmpl.children || EMPTY;
 
   // That's it??
   return _node;
