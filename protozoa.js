@@ -14,7 +14,6 @@
 
   // Constants
   var EMPTY = [];
-  var RESERVED = /tag|ns|ref|children|init/;
 
   // Protozoa is a single recursive function
   function protozoa (tmpl) {
@@ -30,8 +29,8 @@
     } else if (typeof tmpl === "object") {
       if (tmpl.tag === "svg") {
         _node = document.createElementNS("http://www.w3.org/2000/svg", tmpl.tag);
-      } else if (tmpl.ns) {
-        _node = document.createElementNS(tmpl.ns, tmpl.tag);
+      } else if (tmpl.namespace) {
+        _node = document.createElementNS(tmpl.namespace, tmpl.tag);
       } else if (tmpl.tag === "fragment") {
         _node = document.createDocumentFragment();
       } else {
@@ -41,7 +40,7 @@
       console.error("Unknown template: " + tmpl);
     }
 
-    // Set all non-reserved properties on the Node
+    // Set properties on the Node
     if (typeof tmpl === "object") {
       Object.getOwnPropertyNames(tmpl).forEach(function (key) {
         if (key === "class" || key === "className") {
@@ -49,7 +48,7 @@
           _node.className = tmpl[key];
         } else if (key === "style") {
           _node.setAttribute("style", tmpl[key]);
-        } else if (!RESERVED.test(key)) {
+        } else if (key !== "children") {
           _node[key] = tmpl[key];
         }
       });
@@ -69,15 +68,9 @@
       }
     });
 
-    // Set reserved properties and run `init()`
-    _node.tag = tmpl.tag;
-    _node.ns = tmpl.ns;
-    _node.ref = tmpl.ref;
+    // Set `children` and run `init()`
     _node.children = tmpl.children || EMPTY;
-    if (tmpl.init) {
-      _node.init = tmpl.init.bind(_node);
-      _node.init();
-    }
+    if (tmpl.init) { _node.init(); }
 
     // That's it??
     return _node;
