@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>protozoa demo</title>
+</head>
+<body>
+<div id="mount"></div>
+<script src="https://cdn.rawgit.com/guscost/simple-flux/v1.0/sf.js"></script>
+<script src="protozoa.js"></script>
+<script>
+
+  // The `clicker` variable will refer to a real DOM Node object
+  var clicker = protozoa({
+    tag: "div",
+    id: "clicker",
+    init: function () {
+      var cmp = this;
+
+      // Define an update function right here if you want
+      var update = function (state) {
+        cmp.container.count.children = [state.count.toString()];
+        cmp.container.input.value = state.count.toString();
+        return true;
+      }
+
+      // Embed a flux store in this DOM Node, why not?
+      cmp.store = sf.createStore({ count: 0 }, function (state, action) {
+        switch (action.type) {
+          case "CLICK":
+          case "RESET":
+            state.count = action.type === "RESET" ? 0 : state.count + 1;
+            return update(state);
+          case "COUNT_SET":
+            state.count = action.value;
+            return update(state);
+        }
+      });
+    },
+
+    // The `children` property exists on generated DOM Nodes
+    // Changing this property will rebuild the Node's innerHTML
+    children: [{
+      // The `tag` string is just the name of the DOM tag
+      tag: "div",
+      // This child will also be a property keyed by the `ref` string
+      // on the containing DOM Node
+      ref: "container",
+      children: [{
+        tag: "label",
+        ref: "label",
+        children: ["clicks: "]
+      }, {
+        tag: "span",
+        id: "count",
+        style: "margin-right:32px;",
+        ref: "count",
+        children: [0]
+      }, {
+        tag: "input",
+        type: "text",
+        value: "50",
+        style: "display:inline-block;width:40px;text-align:right;",
+        ref: "input"
+      }, {
+        tag: "input",
+        type: "button",
+        value: "Set Value",
+        onclick: function (e) {
+          // Different frameworks have different patterns to share data with neighbors
+          // Since this is the real DOM w/ IDL attributes and all, it's trivial here
+          sf.dispatch({ 
+            type: "COUNT_SET",
+            value: parseInt(e.target.previousSibling.value) || 0
+          }); 
+        }
+      }]
+    }, {
+      tag: "br"
+    }]
+  });
+  document.querySelector("#mount").appendChild(clicker);
+</script>
+
+<!-- With a message bus architecture, messages can be sent from anywhere -->
+<button onclick="sf.dispatch({ type: 'CLICK' });">Click</button>
+
+</body>
+</html>

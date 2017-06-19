@@ -1,7 +1,7 @@
 {
   "name": "protozoa",
-  "version": "0.1.4",
-  "description": "A micro-app renderer",
+  "version": "0.2.0",
+  "description": "a micro-app generator",
   "main": "protozoa.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
