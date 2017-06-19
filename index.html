@@ -1,0 +1,62 @@
+<html>
+<body>
+<div id="mount"></div>
+<script src="https://cdn.rawgit.com/guscost/simple-flux/v1.0/sf.js"></script>
+<script src="protozoa.js"></script>
+<script>
+
+  // The `clicker` variable will be a real DOM Node object
+  var clicker = protozoa({
+    tag: "div",
+    id: "clicker",
+    init: function () {
+      var cmp = this;
+      var initialState = { clicks: 0 };
+
+      // Embed a flux store in this DOM Node, why not?
+      cmp.store = sf.createStore(initialState, function (state, action) {
+        switch (action.type) {
+          case "CLICK":
+          case "RESET":
+            state.clicks = action.type === "RESET" ? 0 : state.clicks + 1;
+            cmp.container.clicks.children = [state.clicks.toString()];
+            return true;
+        }
+      });
+    },
+
+    // The `children` property exists on generated DOM Nodes
+    // Changing this property will rebuild the Node's innerHTML
+    // To match the new value
+    children: [{
+      tag: "div",
+      // The `ref` string is a property name that will have a reference
+      // To this child on the parent DOM Node
+      ref: "container",
+      children: [{
+        tag: "label",
+        ref: "label",
+        children: ["Clicks: "]
+      }, {
+        tag: "span",
+        ref: "clicks",
+        id: "clicks",
+        children: [0]
+      }, " ", {
+        tag: "input",
+        type: "button",
+        value: "RESET",
+        onclick: function (e) { sf.dispatch({ type: "RESET" }); }
+      }]
+    }, {
+      tag: "br"
+    }]
+  });
+  document.querySelector("#mount").appendChild(clicker);
+</script>
+
+<!-- With a message bus architecture, messages can be sent from anywhere -->
+<button onclick="sf.dispatch({ type: 'CLICK' });">CLICK</button>
+
+</body>
+</html>

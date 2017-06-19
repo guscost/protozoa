@@ -3,26 +3,28 @@
 // © 2017 Gus Cost
 
 var EMPTY = [];
-var RESERVED = /tag|namespace|init|children/;
+var RESERVED = /tag|ns|ref|init|children/;
 
 var protozoa = function (tmpl) {
 
   // Create HTML node (from CellJS)
-  var $node;
-  if (tmpl.tag === "svg") {
-    $node = document.createElementNS("http://www.w3.org/2000/svg", tmpl.tag);
-    $node._meta = { namespace: $node.namespaceURI };
-  } else if (tmpl.namespace) {
-    $node = document.createElementNS(tmpl.namespace, tmpl.tag);
-    $node._meta = { namespace: $node.namespaceURI };
-  } else if (tmpl.tag === "fragment") {
-    $node = document.createDocumentFragment();
-  } else if (typeof tmpl === "object") {
-    $node = document.createElement(tmpl.tag || "div");
+  var _node;
+  if (typeof tmpl === "string") {
+    _node = document.createTextNode(tmpl);
+  } else if (typeof tmpl === "number") {
+    _node = document.createTextNode(tmpl.toString());
   } else if (typeof tmpl === "function") {
-    $node = document.createTextNode(tmpl());
-  } else if (typeof tmpl === "string") {
-    $node = document.createTextNode(tmpl);
+    _node = document.createTextNode(tmpl());
+  } else if (typeof tmpl === "object") {
+    if (tmpl.tag === "svg") {
+      _node = document.createElementNS("http://www.w3.org/2000/svg", tmpl.tag);
+    } else if (tmpl.ns) {
+      _node = document.createElementNS(tmpl.ns, tmpl.tag);
+    } else if (tmpl.tag === "fragment") {
+      _node = document.createDocumentFragment();
+    } else {
+      _node = document.createElement(tmpl.tag || "div");
+    }
   } else {
     console.error("Unknown template: " + tmpl);
   }
@@ -31,42 +33,37 @@ var protozoa = function (tmpl) {
   if (typeof tmpl === "object") {
     Object.getOwnPropertyNames(tmpl).forEach(function (key) {
       if (key === "class" || key === "className") {
-        $node.class = tmpl[key];
-        $node.className = tmpl[key];
+        _node.class = tmpl[key];
+        _node.className = tmpl[key];
       } else if (!RESERVED.test(key)) {
-        $node[key] = tmpl[key];
+        _node[key] = tmpl[key];
       }
     });
   }
 
-  // Immutable properties, must recreate to change these
-  $node.tag = tmpl.tag;
-  $node.init = tmpl.init || function () { };
-
   // Mutable/magic `children` property
-  Object.defineProperty($node, "children", {
-    get: function (children) {
-      return children;
+  var _children = [];
+  Object.defineProperty(_node, "children", {
+    get: function () {
+      return _children;
     },
-    set: function (children) {
-      $node.innerHTML = "";
-      children.forEach(function (child) {
-        var element = protozoa(child);
-        if (child.children) {
-          child.children.forEach(function (grandchild) {
-            element.appendChild(protozoa(grandchild));
-          });
-        }
-        $node.appendChild(element);
+    set: function (value) {
+      _node.innerHTML = "";
+      _children = value.map(function (child) {
+        var _child = protozoa(child);
+        if (child.ref) { _node[child.ref] = _child; }
+        return _node.appendChild(_child);
       });
-      return children;
     }
   });
 
-  // Kick it off
-  $node.children = tmpl.children || EMPTY;
-  $node.init();
+  // Set reserved properties and run init()
+  if (tmpl.init) {
+    _node.init = tmpl.init.bind(_node);
+    _node.init();
+  }
+  _node.children = tmpl.children || EMPTY;
 
   // That's it??
-  return $node;
+  return _node;
 }
