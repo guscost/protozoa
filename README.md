@@ -1,5 +1,7 @@
 # protozoa
-A micro-app generator
+a micro-app generator
+
+![protozoa logo](logo.jpg)
 
 ## Usage
 See [demo.html](demo.html) for an ES5 example. Also available on NPM.
