@@ -14,6 +14,7 @@
 
   // Constants
   var EMPTY = [];
+  var RESERVED = /children|ch/
 
   // Protozoa is a single recursive function
   function protozoa (tmpl) {
@@ -48,7 +49,7 @@
           _node.className = tmpl[key];
         } else if (key === "style") {
           _node.setAttribute("style", tmpl[key]);
-        } else if (key !== "children") {
+        } else if (!RESERVED.test(key)) {
           _node[key] = tmpl[key];
         }
       });
