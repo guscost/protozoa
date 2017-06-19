@@ -18,13 +18,20 @@ var el = protozoa({
 });
 ```
 
-The function basically returns a DOM Node with a few additions. You can append this Node anywhere in your HTML page:
+Here's the template API. All properties are optional:
+- `namespace`: the HTML namespace (`<svg>` is automatic)
+- `tag`: the name of the HTML Node to create, if unspecified it will be a `<div>`
+- `ref`: the name of a property that the parent element can access for convenience
+- `init`: a function to run when the Node is created, with the Node as `this`
+- `children`: an array of nested templates, strings, numbers, or functions
+
+The function returns an ordinary DOM Node with a few additions. You can append this Node anywhere in your HTML page:
 
 ```js
 document.body.appendChild(el);
 ```
 
-More information on the template and DOM Node APIs coming soon. The template API (and many concepts) borrow heavily from [cell](https://www.celljs.org/). See [demo.html](demo.html) in the meantime.
+More information on the DOM Node API coming soon. The template API (and many concepts) borrows heavily from [cell](https://www.celljs.org/). See [demo.html](demo.html) for an example using a flux-like message bus.
 
 ## Concept
 A "micro-app" is a web app that is all of the following:
