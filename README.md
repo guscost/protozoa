@@ -18,7 +18,8 @@ var el = protozoa({
 });
 ```
 
-Here's the template API. All properties are optional:
+### Template API
+The template API borrows heavily from [cell](https://www.celljs.org/). All properties are optional:
 - `namespace`: the HTML namespace (`<svg>` is automatic)
 - `tag`: the name of the HTML Node to create, if unspecified it will be a `<div>`
 - `ref`: the name of a property that the parent element can access for convenience
@@ -31,7 +32,16 @@ The function returns an ordinary DOM Node with a few additions. You can append t
 document.body.appendChild(el);
 ```
 
-More information on the DOM Node API coming soon. The template API (and many concepts) borrows heavily from [cell](https://www.celljs.org/). See [demo.html](demo.html) for an example using a flux-like message bus.
+### DOM Node API
+DOM Nodes returned by `protozoa` have a special array property `children` which controls the Node's contents. Assigning to this property will empty out the containing DOM node and append the new structure in its place:
+
+```js
+el.children = ["Something Else"];
+```
+
+That's pretty much it. All other properties are treated as native [IDL attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Content_versus_IDL_attributes) (with some special preprocessing for `class`/`className` and `style`). Including either `class` OR `className` will set the Node's `class` AND `className` attributes. Style has weird behavior and you can't use that property to store arbitrary strings. Properties not used by the browser are fair game for your functions, state objects, anything else your Node needs.
+
+See [demo.html](demo.html) for an example using a flux-like message bus.
 
 ## Concept
 A "micro-app" is a web app that is all of the following:
