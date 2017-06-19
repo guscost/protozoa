@@ -25,6 +25,7 @@ The template API borrows heavily from [cell](https://www.celljs.org/). All prope
 - `ref`: the name of a property that the parent element can access for convenience
 - `init`: a function to run when the Node is created, with the Node as `this`
 - `children`: an array of nested templates, strings, numbers, or functions
+- `ch`: an alias for `children`
 
 The function returns an ordinary DOM Node with a few additions. You can append this Node anywhere in your HTML page:
 
