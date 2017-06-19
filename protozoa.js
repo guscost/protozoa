@@ -47,6 +47,8 @@
         if (key === "class" || key === "className") {
           _node.class = tmpl[key];
           _node.className = tmpl[key];
+        } else if (key === "style") {
+          _node.setAttribute("style", tmpl[key]);
         } else if (!RESERVED.test(key)) {
           _node[key] = tmpl[key];
         }
