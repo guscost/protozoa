@@ -1,11 +1,11 @@
-// Protozoa v0.2.0
+// protozoa v0.2.1
 // MIT License
 // Copyright 2017 Gus Cost
 
 (function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
+  if (typeof define === "function" && define.amd) {
     define([], factory);
-  } else if (typeof module === 'object' && module.exports) {
+  } else if (typeof module === "object" && module.exports) {
     module.exports = factory();
   } else {
     root.protozoa = factory();
