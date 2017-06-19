@@ -38,9 +38,9 @@ The micro-app architecture is based on a restriction: All "components" must be D
 Remember back in the day when you could query the DOM and actually *do* something with an element? With this architecture, that's how *everything* works!
 
 ## Safety not guaranteed
-As a low-level DOM wrangler, you should already know that there are pitfalls with any approach. This one is no different - careful not to overwrite any important attributes with data, because those are your DOM Nodes!
+If you've worked with the real DOM, you should already know that there are significant pitfalls with any approach. This way is no different. Careful not to overwrite any important attributes with data, because those are your DOM Nodes!
 
-Adding custom properties to DOM Nodes was looked down on for years probably because of this risk, but we're all adults, right?
+Custom properties on DOM Nodes was looked down on for years probably because of this risk, but we're adults and we can be careful.
 
 ## The real tradeoff is performance
 Because of this choice, a complex UI rendered by emptying out containers and dumping in new DOM Nodes means a lot of screen repaints. This architecture should be chosen with the assumption that apps will be smaller and simpler. The `init()` template API makes it easy to only redraw certain parts of an app in response to any kind of state engine, so a UI built in this way can still be optimized, but sometimes a better solution is to break apart your page into smaller apps that communicate with each other but don't need to keep a huge state in sync with a huge UI. More along those lines soon.
