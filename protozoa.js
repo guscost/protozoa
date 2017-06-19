@@ -1,6 +1,6 @@
 // Protozoa v0.1.3
 // MIT License
-// © 2017 Gus Cost
+// Copyright 2017 Gus Cost
 
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
