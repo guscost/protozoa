@@ -1,4 +1,4 @@
-// protozoa v0.2.4
+// protozoa v0.2.6
 // MIT License
 // Copyright 2017 Gus Cost
 
@@ -56,7 +56,7 @@
 
     // Mutable/magic `children` property
     var _children = [];
-    Object.defineProperty(_node, "children", {
+    var children = {
       get: function () { return _children; },
       set: function (value) {
         _node.innerHTML = "";
@@ -66,7 +66,9 @@
           return _node.appendChild(_child);
         });
       }
-    });
+    };
+    Object.defineProperty(_node, "children", children);
+    Object.defineProperty(_node, "ch", children);
 
     // Set `children` and run `init()`
     _node.children = tmpl.children || EMPTY;
