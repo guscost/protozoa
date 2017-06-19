@@ -1,4 +1,4 @@
-// Protozoa v0.1.5
+// Protozoa v0.1.6
 // MIT License
 // Copyright 2017 Gus Cost
 
@@ -16,8 +16,8 @@
   var EMPTY = [];
   var RESERVED = /tag|ns|ref|children|init/;
 
-  // Just a single function
-  return function (tmpl) {
+  // Protozoa is a single recursive function
+  function protozoa (tmpl) {
 
     // Create HTML Node (adapted from https://github.com/intercellular/cell)
     var _node;
@@ -58,9 +58,7 @@
     // Mutable/magic `children` property
     var _children = [];
     Object.defineProperty(_node, "children", {
-      get: function () {
-        return _children;
-      },
+      get: function () { return _children; },
       set: function (value) {
         _node.innerHTML = "";
         _children = value.map(function (child) {
@@ -83,5 +81,8 @@
 
     // That's it??
     return _node;
-  }
+  };
+
+  // Module API is just the protozoa function
+  return protozoa;
 }));
