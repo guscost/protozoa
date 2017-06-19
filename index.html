@@ -11,27 +11,35 @@
     id: "clicker",
     init: function () {
       var cmp = this;
-      var initialState = { clicks: 0 };
+
+      // Define an update function right here if you want
+      var update = function (state) {
+        cmp.container.count.children = [state.count.toString()];
+        cmp.container.input.value = state.count.toString();
+        return true;
+      }
 
       // Embed a flux store in this DOM Node, why not?
-      cmp.store = sf.createStore(initialState, function (state, action) {
+      cmp.store = sf.createStore({ count: 0 }, function (state, action) {
         switch (action.type) {
           case "CLICK":
           case "RESET":
-            state.clicks = action.type === "RESET" ? 0 : state.clicks + 1;
-            cmp.container.clicks.children = [state.clicks.toString()];
-            return true;
+            state.count = action.type === "RESET" ? 0 : state.count + 1;
+            return update(state);
+          case "COUNT_SET":
+            state.count = action.value;
+            return update(state);
         }
       });
     },
 
     // The `children` property exists on generated DOM Nodes
     // Changing this property will rebuild the Node's innerHTML
-    // To match the new value
     children: [{
+      // The `tag` string is just the name of the DOM tag
       tag: "div",
-      // The `ref` string is a property name that will have a reference
-      // To this child on the parent DOM Node
+      // This child will also be a property keyed by the `ref` string
+      // on the containing DOM Node
       ref: "container",
       children: [{
         tag: "label",
@@ -39,14 +47,28 @@
         children: ["Clicks: "]
       }, {
         tag: "span",
-        ref: "clicks",
-        id: "clicks",
+        id: "count",
+        style: "margin-right:32px;",
+        ref: "count",
         children: [0]
-      }, " ", {
+      }, {
+        tag: "input",
+        type: "text",
+        value: "50",
+        style: "display:inline-block;width:40px;text-align:right;",
+        ref: "input"
+      }, {
         tag: "input",
         type: "button",
-        value: "RESET",
-        onclick: function (e) { sf.dispatch({ type: "RESET" }); }
+        value: "Set Value",
+        onclick: function (e) {
+          // Different frameworks have different patterns to share data with neighbors
+          // Since this is the real DOM w/ IDL attributes and all, it's trivial here
+          sf.dispatch({ 
+            type: "COUNT_SET",
+            value: parseInt(e.target.previousSibling.value) || 0
+          }); 
+        }
       }]
     }, {
       tag: "br"
@@ -56,7 +78,7 @@
 </script>
 
 <!-- With a message bus architecture, messages can be sent from anywhere -->
-<button onclick="sf.dispatch({ type: 'CLICK' });">CLICK</button>
+<button onclick="sf.dispatch({ type: 'CLICK' });">Click</button>
 
 </body>
 </html>
