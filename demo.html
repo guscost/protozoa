@@ -14,14 +14,6 @@
     tag: "div",
     id: "clicker",
 
-    // Define an update function for rendering if you want
-    update: function () {
-      var state = this.store.getState();
-      this.container.count.children = [state.count.toString()];
-      this.container.input.value = state.count.toString();
-      return true;
-    },
-
     // Init function runs right after the node is created
     init: function () {
       var cmp = this;
@@ -30,14 +22,21 @@
       cmp.store = sf.createStore({ count: 0 }, function (state, action) {
         switch (action.type) {
           case "CLICK":
-          case "RESET":
-            state.count = action.type === "RESET" ? 0 : state.count + 1;
+            state.count = state.count + 1;
             return cmp.update();
           case "COUNT_SET":
             state.count = action.value;
             return cmp.update();
         }
       });
+    },
+
+    // Define an update function for rendering if you want
+    update: function () {
+      var state = this.store.getState();
+      this.container.count.children = [state.count.toString()];
+      this.container.input.value = state.count.toString();
+      return true;
     },
 
     // The `children` property exists on generated DOM Nodes
@@ -74,7 +73,7 @@
           sf.dispatch({ 
             type: "COUNT_SET",
             value: parseInt(e.target.previousSibling.value) || 0
-          }); 
+          });
         }
       }]
     }, {
