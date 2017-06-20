@@ -13,7 +13,7 @@ var element = protozoa({
   tag: "div",
   children: [
     "Hello ",
-    { tag: "strong", children: ["world!"] }
+    { tag: "strong", children: "world!" }
   ]
 });
 ```
@@ -24,7 +24,7 @@ The template API borrows heavily from [cell](https://www.celljs.org/). All prope
 - `tag`: the name of the HTML Node to create, if unspecified it will be a `<div>`
 - `ref`: the name of a property that the parent element can access for convenience
 - `init`: a function to run when the Node is created, with the Node as `this`
-- `children`: an array of nested templates, strings, numbers, or functions
+- `children`: a string, number, function, or an array of values or nested templates
 - `ch`: an alias for `children`
 
 The function returns an ordinary DOM Node with a few additions. You can append this Node anywhere in your HTML page:
