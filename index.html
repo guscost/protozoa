@@ -5,36 +5,65 @@
 <title>protozoa</title>
 </head>
 <body>
-<div id="header"></div>
-<div id="page"></div>
-<div id="footer"></div>
+<div id="page" class="container"></div>
 <script src="sf.js"></script>
 <script src="protozoa.js"></script>
 <script>
 
-  // The `header` variable refers to a real DOM Node object
+  // `page` variable
+  var page = document.getElementById("page");
+
+  // The `header` variable will refer to a real DOM Node object
   var header = protozoa({
     tag: "div",
     class: "header",
-    children: [{
+    ch: [{
       tag: "div",
       class: "jumbotron",
-      children: [{ 
+      style: "border-radius:0;",
+      ch: [{ 
         tag: "h1",
-        children: ["protozoa"]
+        ch: "protozoa"
       }, {
         tag: "br"
       }, {
         tag: "h5",
-        children: ["a micro-app generator"]
+        ch: "a micro-app generator"
       }, {
         tag: "a",
         href: "https://github.com/guscost/protozoa",
-        children: ["github"]
+        ch: "github"
+      }, {
+        tag: "br"
       }]
     }]
   });
-  document.querySelector("#header").appendChild(header);
+  page.appendChild(header);
+
+  // The `content` variable will contain some interactive demos
+  var content = protozoa({
+    tag: "div",
+    class: "header",
+    ch: [{
+      tag: "div",
+      class: "jumbotron",
+      style: "border-radius:0;padding-top:32px;background:#F6F6FA;",
+      ch: [{ 
+        tag: "div", class: "row", ch: [{
+          tag: "div", class: "col-md-5", ch: [{
+            tag: "h4",
+            ch: "protozoa"
+          }, {
+            tag: "p",
+            ch: "protozoa is a micro-app generator."
+          }]
+        }]
+      }, {
+        tag: "br"
+      }]
+    }]
+  });
+  page.appendChild(content);
 </script>
 
 </body>
