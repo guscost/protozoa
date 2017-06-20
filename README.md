@@ -43,7 +43,7 @@ element.children = ["Something Else"];
 ### Advanced API
 Both the template and the DOM Node reserve an additional property: `kernel`. This property is used to set, update, or retrieve the recursive kernel function that protozoa uses internally to walk through a nested spec. If you didn't understand the previous sentence, you should probably leave it alone.
 
-### Other Properties/Attributes
+### Other properties
 That's pretty much it. All other properties are treated as native [IDL attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Content_versus_IDL_attributes) (with some special preprocessing for `class`/`className` and `style`). Including either `class` OR `className` will set the Node's `class` AND `className` attributes. Style has weird behavior and you can't use that property to store arbitrary strings. Anything not used by the browser is fair game for your functions, state objects, or whatever else your Node needs.
 
 See [demo.html](demo.html) for an example using a flux-like message bus.
