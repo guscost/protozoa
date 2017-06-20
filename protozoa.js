@@ -50,6 +50,15 @@
       console.error('Invalid template: ' + tmpl);
     }
 
+    // Recursive kernel describes what to do with nested values or templates
+    _node.kernel = tmpl.kernel || function (children) {
+      return children.map(function (child) {
+        var _child = protozoa(child); // Recurse through the tree!
+        if (child.ref) { _node[child.ref] = _child; }
+        return _node.appendChild(_child);
+      })
+    };
+
     // Mutable/magic `children` property (and `ch` alias)
     var _children = [];
     Object.defineProperty(_node, 'children', {
@@ -59,11 +68,7 @@
         if (LEAF_NODES.test(typeof value)) { // Can be string/number/function
           return _node.appendChild(protozoa(value)); 
         } else if (Array.isArray(value)) { // Or an array of nested templates
-          _children = value.map(function (child) {
-            var _child = protozoa(child); // Recurse through the tree!
-            if (child.ref) { _node[child.ref] = _child; }
-            return _node.appendChild(_child);
-          });
+          _children = _node.kernel(value);
         } else {  
           console.error('Invalid children: ' + value);
         }
