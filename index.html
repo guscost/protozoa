@@ -5,34 +5,87 @@
 <title>protozoa</title>
 </head>
 <body>
-<div id="mount"></div>
-<script src="https://cdn.rawgit.com/guscost/simple-flux/v1.0/sf.js"></script>
+<div id="page" class="container"></div>
+<script src="sf.js"></script>
 <script src="protozoa.js"></script>
 <script>
 
-  // The `header` variable refers to a real DOM Node object
+  // `page` variable
+  var page = document.getElementById("page");
+
+  // The `header` variable will refer to a real DOM Node object
   var header = protozoa({
     tag: "div",
     class: "header",
-    children: [{
+    ch: [{
       tag: "div",
       class: "jumbotron",
-      children: [{ 
+      style: "border-radius:0;",
+      ch: [{ 
         tag: "h1",
-        children: ["protozoa"]
+        ch: "protozoa"
       }, {
         tag: "br"
       }, {
         tag: "h5",
-        children: ["a micro-app generator"]
+        ch: "a micro-app generator"
       }, {
         tag: "a",
         href: "https://github.com/guscost/protozoa",
-        children: ["github"]
+        ch: "github"
+      }, {
+        tag: "br"
       }]
     }]
   });
-  document.querySelector("#mount").appendChild(header);
+  page.appendChild(header);
+
+  // The `content` variable will contain some interactive demos
+  var content = protozoa({
+    tag: "div",
+    class: "header",
+    ch: [{
+      tag: "div",
+      class: "jumbotron",
+      style: "border-radius:0;padding-top:32px;background:#F6F6FA;",
+      ch: [{ 
+        tag: "div",
+        ch: [{
+          tag: "div",
+          class: "col-xs-4",
+          ch: [{
+            tag: "h5",
+            ch: "A micro-app is all of the following:"
+          }, {
+            tag: "br"
+          }, {
+            tag: "ul",
+            ch: [
+              { tag: "li", ch: "Small (not rendering more than ten thousand items)" },
+              { tag: "li", ch: "Composable (able to be controlled and extended via a simple API)" },
+              { tag: "li", ch: "Embedded (no model, no viewmodel, no virtual DOM, just the real DOM)" }
+            ]
+          }, {
+            tag: "br"
+          }, {
+            tag: "h5",
+            ch: "It's just the DOM"  
+          }, {
+            tag: "br"
+          }, {
+            tag: "p",
+            ch: "The micro-app architecture is based on a restriction: All \"components\" must be DOM" +
+              " Nodes, and all extra functionality must be built into those very same objects. With" +
+              " ReactJS every rendered component must be linked to a single DOM Node, so why not just" +
+              " start with the DOM Node and build all our component functionality into that? Voila, no" +
+              " more headaches from immutable value props, the DOM Node has a value and that is all" +
+              " that ever needs to exist."
+          }]
+        }]
+      }]
+    }]
+  });
+  page.appendChild(content);
 </script>
 
 </body>

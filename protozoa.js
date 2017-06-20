@@ -1,78 +1,81 @@
-// protozoa v0.2.7
-// MIT License
-// Copyright 2017 Gus Cost
-
+/**
+ * protozoa v1.1.1
+ * MIT License
+ * Copyright 2017 Gus Cost
+ */
 (function (root, factory) {
-  if (typeof define === "function" && define.amd) {
+  if (typeof define === 'function' && define.amd) {
     define([], factory);
-  } else if (typeof module === "object" && module.exports) {
+  } else if (typeof module === 'object' && module.exports) {
     module.exports = factory();
   } else {
     root.protozoa = factory();
   }
 }(this, function () {
+  'use strict';
 
   // Constants
-  var EMPTY = [];
-  var RESERVED = /children|ch/
+  var EMPTY_SET = [];
+  var RESERVED_WORDS = /children|ch/;
+  var LEAF_NODES = /string|number|function/;
 
   // Protozoa is a single recursive function
   function protozoa (tmpl) {
 
-    // Create HTML Node (adapted from https://github.com/intercellular/cell)
+    // Create DOM Node (adapted from https://github.com/intercellular/cell)
     var _node;
-    if (typeof tmpl === "string") {
-      _node = document.createTextNode(tmpl);
-    } else if (typeof tmpl === "number") {
-      _node = document.createTextNode(tmpl.toString());
-    } else if (typeof tmpl === "function") {
-      _node = document.createTextNode(tmpl());
-    } else if (typeof tmpl === "object") {
-      if (tmpl.tag === "svg") {
-        _node = document.createElementNS("http://www.w3.org/2000/svg", tmpl.tag);
+    if (LEAF_NODES.test(typeof tmpl)) {
+      _node = document.createTextNode(typeof tmpl === 'function' ? tmpl() : tmpl);
+    } else if (typeof tmpl === 'object') {
+      if (tmpl.tag === 'svg') {
+        _node = document.createElementNS('http://www.w3.org/2000/svg', tmpl.tag);
       } else if (tmpl.namespace) {
         _node = document.createElementNS(tmpl.namespace, tmpl.tag);
-      } else if (tmpl.tag === "fragment") {
+      } else if (tmpl.tag === 'fragment') {
         _node = document.createDocumentFragment();
       } else {
-        _node = document.createElement(tmpl.tag || "div");
+        _node = document.createElement(tmpl.tag || 'div');
       }
-    } else {
-      console.error("Unknown template: " + tmpl);
-    }
-
-    // Set properties on the Node
-    if (typeof tmpl === "object") {
       Object.getOwnPropertyNames(tmpl).forEach(function (key) {
-        if (key === "class" || key === "className") {
-          _node.class = tmpl[key];
-          _node.className = tmpl[key];
-        } else if (key === "style") {
-          _node.setAttribute("style", tmpl[key]);
-        } else if (!RESERVED.test(key)) {
-          _node[key] = tmpl[key];
+        if (key === 'class' || key === 'className') {
+          _node.class = tmpl[key];      // Most browsers are OK with `class`
+          _node.className = tmpl[key];  // Safari needs `className`
+        } else if (key === 'style') {
+          _node.setAttribute('style', tmpl[key]);  // Style is weird
+        } else if (!RESERVED_WORDS.test(key)) {
+          _node[key] = tmpl[key];  // Copy anything that isn't reserved
         }
       });
+    } else {
+      console.error('Invalid template: ' + tmpl);
     }
 
-    // Mutable/magic `children` property
+    // Mutable/magic `children` property (and `ch` alias)
     var _children = [];
-    var children = {
+    Object.defineProperty(_node, 'children', {
       get: function () { return _children; },
       set: function (value) {
-        _node.innerHTML = "";
-        _children = value.map(function (child) {
-          var _child = protozoa(child);
-          if (child.ref) { _node[child.ref] = _child; }
-          return _node.appendChild(_child);
-        });
+        _node.innerHTML = '';
+        if (LEAF_NODES.test(typeof value)) { // Can be string/number/function
+          return _node.appendChild(protozoa(value)); 
+        } else if (Array.isArray(value)) { // Or an array of nested templates
+          _children = value.map(function (child) {
+            var _child = protozoa(child); // Recurse through the tree!
+            if (child.ref) { _node[child.ref] = _child; }
+            return _node.appendChild(_child);
+          });
+        } else {  
+          console.error('Invalid children: ' + value);
+        }
       }
-    };
-    Object.defineProperty(_node, "children", children);
-    Object.defineProperty(_node, "ch", children);
+    });
+    Object.defineProperty(_node, 'ch', {
+      get: function () { return _node.children; },
+      set: function (value) { return _node.children = value; }
+    })
 
     // Set `children` and run `init()`
-    _node.children = tmpl.children || EMPTY;
+    _node.children = tmpl.children || tmpl.ch || EMPTY_SET;
     if (tmpl.init) { _node.init(); }
 
     // That's it??
