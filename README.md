@@ -1,4 +1,4 @@
-![protozoa](logo.jpg)
+![protozoa](https://cdn.rawgit.com/guscost/protozoa/trunk/logo.svg)
 a micro-app generator
 
 ## Usage
