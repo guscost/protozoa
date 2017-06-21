@@ -10,10 +10,10 @@ The protozoa module itself is just one factory function that is called with a te
 
 ```js
 var element = protozoa({
-  tag: "div",
+  tag: 'div',
   children: [
-    "Hello ",
-    { tag: "strong", children: "world!" }
+    'Hello ',
+    { tag: 'strong', children: 'world!' }
   ]
 });
 ```
@@ -37,7 +37,7 @@ document.body.appendChild(element);
 Container DOM Nodes returned by `protozoa` have a special array property `children` which controls the Node's contents. Assigning to this property will empty out the containing DOM node and append the new structure in its place:
 
 ```js
-element.children = ["Something Else"];
+element.children = ['Something Else'];
 ```
 
 ### Advanced API
