@@ -1,6 +1,6 @@
 
 <div style="width:300px;background:#000;filter:invert(100%);">
-![protozoa](https://cdn.rawgit.com/guscost/protozoa/trunk/logo.svg)
+  <img src="https://cdn.rawgit.com/guscost/protozoa/trunk/logo.svg" alt="protozoa" />
 </div>
 
 a micro-app generator
