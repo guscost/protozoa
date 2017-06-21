@@ -2,9 +2,25 @@
 <html>
 <head>
 <title>protozoa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" />
+<style>
+  @media(max-width: 575px) { 
+    .clicker-form { 
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .form-group {
+      display: flex;
+      flex: 0 0 auto;
+      flex-flow: row wrap;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+  }
+</style>
 <script src="https://cdn.rawgit.com/guscost/autotroph/v1.1/autotroph.js"></script>
-<script src="https://cdn.rawgit.com/guscost/protozoa/v1.4.3/protozoa.js"></script>
+<script src="protozoa.js"></script>
 </head>
 <body>
 <div id="page" class="container" style="position:relative;"></div>
@@ -14,7 +30,7 @@
 
   // The `clicker` Node is an interactive DOM Node
   // It uses a flux-like message passing architecture
-  var clicker = protozoa({
+  var clickerTmpl = {
     ref: 'clicker',
 
     // The `tag` string is just the name of the DOM 
@@ -25,7 +41,7 @@
     class: 'clicker',
 
     // Other attributes are fine
-    style: 'float:right;display:flex;padding:16px 32px;',
+    style: 'width:100%;padding:16px 0;border-bottom:1px solid #5cb85c',
 
     // Init function runs right after the node is created
     init: function () {
@@ -39,6 +55,7 @@
         switch (action.type) {
           case 'CLICK':
             state.count++;
+            state.text = state.count.toString();
             return cmp.update();
           case 'TEXT_SET':
             state.text = action.value;
@@ -57,47 +74,53 @@
 
     // The `ch` (or `children`) property exists on generated DOM Nodes
     // Changing this property will rebuild the Node's innerHTML
+    // NOTE: Inline styles are for clarity, usually don't do this
     ch: [{
       ref: 'form',
       tag: 'form',
-      class: 'form-inline',
-      style: 'flex:1;',
+      class: 'form-inline clicker-form',
+      style: 'display:flex;',
       ch: [{
         // This child can be referred to as `$node.labels`
         // from the containing DOM Node
         ref: 'labels',
-        class: 'form-group',
-        ch: [{
-          tag: 'label',
-          style: 'margin-right:8px;font-weight:bold;',
-          ch: 'Text:'
-        }, {
-          ref: 'displayText',
-          tag: 'label',
-          style: 'margin-right:16px;',
-          ch: ''
-        }, {
-          tag: 'label',
-          style: 'margin-right:8px;font-weight:bold;',
-          ch: 'Clicks:'
-        }, {
-          ref: 'displayCount',
-          tag: 'label',
-          style: 'margin-right:32px;',
-          ch: '0'
-        }]
+        class: 'form-group labels',
+        style: 'flex:1;text-align:right;',
+        ch: [
+          {
+            tag: 'label',
+            style: 'font-weight:bold;',
+            ch: 'Clicks:'
+          }, {
+            ref: 'displayCount',
+            tag: 'label',
+            style: 'margin-left:8px;',
+            ch: '0'
+          }, {
+            tag: 'label',
+            style: 'margin-left:16px;font-weight:bold;',
+            ch: 'Latest:'
+          }, {
+            ref: 'displayText',
+            tag: 'label',
+            style: 'margin-left:8px;',
+            ch: ''
+          }
+        ]
       }, {
         ref: 'inputs',
-        class: 'form-group',
+        class: 'form-group inputs',
+        style: 'width:216px;',
         ch: [{
           ref: 'demoInput',
           tag: 'input',
           type: 'text',
           value: '',
-          class: 'form-control',
           placeholder: 'Type!',
-          style: 'width:100px;margin-right:16px;',
-          onkeydown: function (e) {
+          maxLength: 6,
+          class: 'form-control',
+          style: 'width:100px;display:inline-block;',
+          onkeyup: function (e) {
             autotroph.dispatch({ 
               type: 'TEXT_SET',
               value: e.target.value
@@ -109,36 +132,40 @@
           type: 'button',
           value: 'Click!',
           class: 'btn btn-success',
+          style: 'width:100px;margin-left:16px;',
           onclick: function (e) {
             autotroph.dispatch({ type: 'CLICK' });
           }
         }]
       }]
     }]
-  });
-  page.appendChild(clicker);
+  };
 
 
   // The `header` variable will refer to a header DOM Node
   var header = protozoa({
     tag: 'div',
     class: 'jumbotron',
-    style: 'border-radius:0;',
-    ch: [{ 
-      tag: 'h1',
-      ch: 'protozoa'
-    }, {
-      tag: 'br'
-    }, {
-      tag: 'h4',
-      ch: 'a micro-app generator'
-    }, {
-      tag: 'a',
-      href: 'https://github.com/guscost/protozoa',
-      ch: 'github'
-    }, {
-      tag: 'br'
-    }]
+    style: 'border-radius:0;padding-top:0;',
+    ch: [
+      clickerTmpl, {
+        tag: 'br'
+      }, { 
+        tag: 'h1',
+        ch: 'protozoa'
+      }, {
+        tag: 'br'
+      }, {
+        tag: 'h4',
+        ch: 'a micro-app generator'
+      }, {
+        tag: 'a',
+        href: 'https://github.com/guscost/protozoa',
+        ch: 'github'
+      }, {
+        tag: 'br'
+      }
+    ]
   });
   page.appendChild(header);
 
@@ -157,7 +184,7 @@
           tag: 'br'
         }, {
           tag: 'h4',
-          ch: 'A micro-app is all of the following:'
+          ch: 'A micro-app is:'
         }, {
           tag: 'br'
         }, {
