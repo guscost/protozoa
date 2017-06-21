@@ -1,4 +1,4 @@
-![protozoa](https://cdn.rawgit.com/guscost/protozoa/trunk/logo-dark.svg)
+<img src="https://cdn.rawgit.com/guscost/protozoa/trunk/logo-dark.svg" width=300 />
 
 a micro-app generator
 
