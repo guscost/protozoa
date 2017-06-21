@@ -1,7 +1,4 @@
-
-<div style="width:300px;background:#000;filter:invert(100%);">
-  <img src="https://cdn.rawgit.com/guscost/protozoa/trunk/logo.svg" alt="protozoa" />
-</div>
+<img style="width:300px;background:#000;filter:invert(100%);" src="https://cdn.rawgit.com/guscost/protozoa/trunk/logo.svg" alt="protozoa" />
 
 a micro-app generator
 
