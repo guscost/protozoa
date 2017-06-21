@@ -44,7 +44,7 @@ element.children = ["Something Else"];
 The template reserves an additional property: `kernel`. This property is used to set or retrieve the immutable recursive kernel function that protozoa uses internally to walk through a nested spec. If you didn't understand the previous sentence, you should probably leave it alone.
 
 ### Other properties
-That's pretty much it. All other properties are treated as native [IDL attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Content_versus_IDL_attributes) (with some special preprocessing for `class`/`className` and `style`). Including either `class` OR `className` will set the Node's `class` AND `className` attributes. Style has weird behavior and you can't use that property to store arbitrary strings. Anything not used by the browser is fair game for your functions, state objects, or whatever else your Node needs.
+That's pretty much it. All other properties are treated as native [IDL attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Content_versus_IDL_attributes) (with preprocessing for `class`, `className` and `style`). Specifying `class` OR `className` will set the Node's `class` AND `className` attributes. Style has weird behavior and you can't use that property to store arbitrary strings. Anything not used by the browser is fair game for your functions, state objects, or whatever else your Node needs.
 
 See [demo.html](demo.html) for an example using a flux-like message bus.
 
@@ -55,7 +55,7 @@ A "micro-app" is a web app that is all of the following:
 - Embedded (no model, no viewmodel, no virtual DOM, just the real DOM)
 
 ## It's just the DOM
-The micro-app architecture is based on a restriction: All "components" must be DOM Nodes, and all extra functionality must be built into those very same objects. With ReactJS every rendered component must be linked to a single DOM Node, so why not just start with the DOM Node and build all our component functionality into that? Voila, no more headaches from immutable `value` props, the DOM Node has a value and that is all that ever needs to exist.
+The micro-app architecture is based on a restriction: All "components" must be DOM Nodes, and all extra functionality must be built into those same objects. With ReactJS every component instance must be linked to a single DOM Node, so why not just start with the DOM Node and build all the component functionality into that? Voila, no more headaches from immutable `value` props, the DOM Node has a value and that's all that ever needs to exist. This package should be mostly compatible back to IE9, but if IDL event or attribute compatibility is an issue, you can set up handlers with jQuery in the init() function instead of using those. 
 
 Remember back in the day when you could query the DOM and actually *do* something with an element? With this architecture, that's how *everything* works!
 
