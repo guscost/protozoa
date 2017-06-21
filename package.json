@@ -1,6 +1,6 @@
 {
   "name": "protozoa",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "a micro-app generator",
   "main": "protozoa.js",
   "scripts": {
