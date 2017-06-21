@@ -4,28 +4,28 @@
 <title>protozoa</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" />
 <script src="https://cdn.rawgit.com/guscost/autotroph/v1.1/autotroph.js"></script>
-<script src="https://cdn.rawgit.com/guscost/protozoa/v1.4.2/protozoa.js"></script>
+<script src="https://cdn.rawgit.com/guscost/protozoa/v1.4.3/protozoa.js"></script>
 </head>
 <body>
 <div id="page" class="container" style="position:relative;"></div>
 <script>
   // Save a reference to the page div
-  var page = document.getElementById("page");
+  var page = document.getElementById('page');
 
   // The `clicker` Node is an interactive DOM Node
   // It uses a flux-like message passing architecture
   var clicker = protozoa({
-    ref: "clicker",
+    ref: 'clicker',
 
     // The `tag` string is just the name of the DOM 
     // <div> is the default if nothing is provided
-    tag: "div",
+    tag: 'div',
 
     // The `class` attribute
-    class: "clicker",
+    class: 'clicker',
 
     // Other attributes are fine
-    style: "float:right;display:flex;padding:16px 32px;",
+    style: 'float:right;display:flex;padding:16px 32px;',
 
     // Init function runs right after the node is created
     init: function () {
@@ -34,13 +34,13 @@
       // Embed a flux store in this DOM Node, why not?
       cmp.store = autotroph.createStore({ 
         count: 0,
-        text: ""
+        text: ''
       }, function (state, action) {
         switch (action.type) {
-          case "CLICK":
+          case 'CLICK':
             state.count++;
             return cmp.update();
-          case "TEXT_SET":
+          case 'TEXT_SET':
             state.text = action.value;
             return cmp.update();
         }
@@ -58,59 +58,59 @@
     // The `ch` (or `children`) property exists on generated DOM Nodes
     // Changing this property will rebuild the Node's innerHTML
     ch: [{
-      ref: "form",
-      tag: "form",
-      class: "form-inline",
-      style: "flex:1;",
+      ref: 'form',
+      tag: 'form',
+      class: 'form-inline',
+      style: 'flex:1;',
       ch: [{
         // This child can be referred to as `$node.labels`
         // from the containing DOM Node
-        ref: "labels",
-        class: "form-group",
+        ref: 'labels',
+        class: 'form-group',
         ch: [{
-          tag: "label",
-          style: "margin-right:8px;font-weight:bold;",
-          ch: "Text:"
+          tag: 'label',
+          style: 'margin-right:8px;font-weight:bold;',
+          ch: 'Text:'
         }, {
-          ref: "displayText",
-          tag: "label",
-          style: "margin-right:16px;",
-          ch: ""
+          ref: 'displayText',
+          tag: 'label',
+          style: 'margin-right:16px;',
+          ch: ''
         }, {
-          tag: "label",
-          style: "margin-right:8px;font-weight:bold;",
-          ch: "Clicks:"
+          tag: 'label',
+          style: 'margin-right:8px;font-weight:bold;',
+          ch: 'Clicks:'
         }, {
-          ref: "displayCount",
-          tag: "label",
-          style: "margin-right:32px;",
-          ch: "0"
+          ref: 'displayCount',
+          tag: 'label',
+          style: 'margin-right:32px;',
+          ch: '0'
         }]
       }, {
-        ref: "inputs",
-        class: "form-group",
+        ref: 'inputs',
+        class: 'form-group',
         ch: [{
-          ref: "demoInput",
-          tag: "input",
-          type: "text",
-          value: "",
-          class: "form-control",
-          placeholder: "Type!",
-          style: "width:100px;margin-right:16px;",
+          ref: 'demoInput',
+          tag: 'input',
+          type: 'text',
+          value: '',
+          class: 'form-control',
+          placeholder: 'Type!',
+          style: 'width:100px;margin-right:16px;',
           onkeydown: function (e) {
             autotroph.dispatch({ 
-              type: "TEXT_SET",
+              type: 'TEXT_SET',
               value: e.target.value
             });
           }
         }, {
-          ref: "demoButton",
-          tag: "input",
-          type: "button",
-          value: "Click!",
-          class: "btn btn-success",
+          ref: 'demoButton',
+          tag: 'input',
+          type: 'button',
+          value: 'Click!',
+          class: 'btn btn-success',
           onclick: function (e) {
-            autotroph.dispatch({ type: "CLICK" })
+            autotroph.dispatch({ type: 'CLICK' });
           }
         }]
       }]
@@ -121,23 +121,23 @@
 
   // The `header` variable will refer to a header DOM Node
   var header = protozoa({
-    tag: "div",
-    class: "jumbotron",
-    style: "border-radius:0;",
+    tag: 'div',
+    class: 'jumbotron',
+    style: 'border-radius:0;',
     ch: [{ 
-      tag: "h1",
-      ch: "protozoa"
+      tag: 'h1',
+      ch: 'protozoa'
     }, {
-      tag: "br"
+      tag: 'br'
     }, {
-      tag: "h4",
-      ch: "a micro-app generator"
+      tag: 'h4',
+      ch: 'a micro-app generator'
     }, {
-      tag: "a",
-      href: "https://github.com/guscost/protozoa",
-      ch: "github"
+      tag: 'a',
+      href: 'https://github.com/guscost/protozoa',
+      ch: 'github'
     }, {
-      tag: "br"
+      tag: 'br'
     }]
   });
   page.appendChild(header);
@@ -145,44 +145,44 @@
 
   // The `content` Node has additional content
   var content = protozoa({
-    tag: "div",
-    class: "jumbotron",
-    style: "border-radius:0;padding-top:32px;background:#F6F6F7;",
+    tag: 'div',
+    class: 'jumbotron',
+    style: 'border-radius:0;padding-top:32px;background:#F6F6F7;',
     ch: [{ 
-      tag: "div",
+      tag: 'div',
       ch: [{
-        tag: "div",
-        class: "col-xs-12",
+        tag: 'div',
+        class: 'col-xs-12',
         ch: [{
-          tag: "br"
+          tag: 'br'
         }, {
-          tag: "h4",
-          ch: "A micro-app is all of the following:"
+          tag: 'h4',
+          ch: 'A micro-app is all of the following:'
         }, {
-          tag: "br"
+          tag: 'br'
         }, {
-          tag: "ul",
-          style: "",
+          tag: 'ul',
+          style: '',
           ch: [
-            { tag: "li", ch: "Small (not rendering more than ten thousand items)" },
-            { tag: "li", ch: "Composable (able to be controlled and extended via a simple API)" },
-            { tag: "li", ch: "Embedded (no model, no viewmodel, no virtual DOM, just the real DOM)" }
+            { tag: 'li', ch: 'Small (not rendering more than ten thousand items)' },
+            { tag: 'li', ch: 'Composable (able to be controlled and extended via a simple API)' },
+            { tag: 'li', ch: 'Embedded (no model, no viewmodel, no virtual DOM, just the real DOM)' }
           ]
         }, {
-          tag: "br"
+          tag: 'br'
         }, {
-          tag: "h4",
-          ch: "It's just the DOM"  
+          tag: 'h4',
+          ch: 'It\'s just the DOM'  
         }, {
-          tag: "br"
+          tag: 'br'
         }, {
-          tag: "p",
-          ch: "The micro-app architecture is based on a restriction: All \"components\" must be DOM" +
-            " Nodes, and all extra functionality must be built into those very same objects. With" +
-            " ReactJS every rendered component must be linked to a single DOM Node, so why not just" +
-            " start with the DOM Node and build all our component functionality into that? Voila, no" +
-            " more headaches from immutable value props, the DOM Node has a value and that is all" +
-            " that ever needs to exist."
+          tag: 'p',
+          ch: 'The micro-app architecture is based on a restriction: All "components" must be DOM ' +
+            'Nodes, and all extra functionality must be built into those very same objects. With ' +
+            'ReactJS every rendered component must be linked to a single DOM Node, so why not just ' +
+            'start with the DOM Node and build all our component functionality into that? Voila, no ' +
+            'more headaches from immutable value props, the DOM Node has a value and that is all ' +
+            'that ever needs to exist.'
         }]
       }]
     }]
