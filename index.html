@@ -1,88 +1,156 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" />
 <title>protozoa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" />
+<script src="https://cdn.rawgit.com/guscost/autotroph/v1.1/autotroph.js"></script>
+<script src="https://cdn.rawgit.com/guscost/protozoa/v1.2.2/protozoa.js"></script>
 </head>
 <body>
 <div id="page" class="container"></div>
-<script src="sf.js"></script>
-<script src="protozoa.js"></script>
 <script>
-
-  // `page` variable
   var page = document.getElementById("page");
 
-  // The `header` variable will refer to a real DOM Node object
+  // The `clicker` Node is an interactive DOM Node
+  // It uses a simple flux-like helper
+  var clicker = protozoa({
+    tag: "div",
+    id: "clicker",
+    style: "float: right;",
+
+    // Init function runs right after the node is created
+    init: function () {
+      var cmp = this;
+
+      // Embed a flux store in this DOM Node, why not?
+      cmp.store = autotroph.createStore({ count: 0 }, function (state, action) {
+        switch (action.type) {
+          case "CLICK":
+            state.count = state.count + 1;
+            return cmp.update();
+          case "COUNT_SET":
+            state.count = action.value;
+            return cmp.update();
+        }
+      });
+    },
+
+    // Define an update function for rendering if you want
+    update: function () {
+      var state = this.store.getState();
+      this.container.count.children = [state.count.toString()];
+      this.container.input.value = state.count.toString();
+      return true;
+    },
+
+    // The `ch` (or `children`) property exists on generated DOM Nodes
+    // Changing this property will rebuild the Node's innerHTML
+    ch: [{
+      // The `tag` string is just the name of the DOM tag
+      tag: "div",
+      // This child will also be a property keyed by the `ref` string
+      // on the containing DOM Node
+      ref: "container",
+      ch: [{
+        tag: "label",
+        ref: "label",
+        ch: ["clicks: "]
+      }, {
+        tag: "span",
+        id: "count",
+        style: "margin-right:32px;",
+        ref: "count",
+        ch: [0]
+      }, {
+        tag: "input",
+        type: "text",
+        value: "50",
+        style: "display:inline-block;width:40px;text-align:right;",
+        ref: "input"
+      }, {
+        tag: "input",
+        type: "button",
+        value: "Set Value",
+        onclick: function (e) {
+          // Different frameworks have different patterns to share data with neighbors
+          // Since this is the real DOM, there's a trivial option
+          autotroph.dispatch({ 
+            type: "COUNT_SET",
+            value: parseInt(e.target.previousSibling.value) || 0
+          });
+        }
+      }]
+    }, {
+      tag: "br"
+    }]
+  });
+  page.appendChild(clicker);
+
+
+  // The `header` variable will refer to a header DOM Node
   var header = protozoa({
     tag: "div",
-    class: "header",
-    ch: [{
-      tag: "div",
-      class: "jumbotron",
-      style: "border-radius:0;",
-      ch: [{ 
-        tag: "h1",
-        ch: "protozoa"
-      }, {
-        tag: "br"
-      }, {
-        tag: "h5",
-        ch: "a micro-app generator"
-      }, {
-        tag: "a",
-        href: "https://github.com/guscost/protozoa",
-        ch: "github"
-      }, {
-        tag: "br"
-      }]
+    class: "jumbotron",
+    style: "border-radius:0;",
+    ch: [{ 
+      tag: "h1",
+      ch: "protozoa"
+    }, {
+      tag: "br"
+    }, {
+      tag: "h4",
+      ch: "a micro-app generator"
+    }, {
+      tag: "a",
+      href: "https://github.com/guscost/protozoa",
+      ch: "github"
+    }, {
+      tag: "br"
     }]
   });
   page.appendChild(header);
 
-  // The `content` variable will contain some interactive demos
+
+  // The `content` Node has additional content
   var content = protozoa({
     tag: "div",
-    class: "header",
-    ch: [{
+    class: "jumbotron",
+    style: "border-radius:0;padding-top:32px;background:#F6F6FA;",
+    ch: [{ 
       tag: "div",
-      class: "jumbotron",
-      style: "border-radius:0;padding-top:32px;background:#F6F6FA;",
-      ch: [{ 
+      ch: [{
         tag: "div",
+        class: "col-xs-12",
         ch: [{
-          tag: "div",
-          class: "col-xs-4",
-          ch: [{
-            tag: "br"
-          }, {
-            tag: "h5",
-            ch: "A micro-app is all of the following:"
-          }, {
-            tag: "br"
-          }, {
-            tag: "ul",
-            ch: [
-              { tag: "li", ch: "Small (not rendering more than ten thousand items)" },
-              { tag: "li", ch: "Composable (able to be controlled and extended via a simple API)" },
-              { tag: "li", ch: "Embedded (no model, no viewmodel, no virtual DOM, just the real DOM)" }
-            ]
-          }, {
-            tag: "br"
-          }, {
-            tag: "h5",
-            ch: "It's just the DOM"  
-          }, {
-            tag: "br"
-          }, {
-            tag: "p",
-            ch: "The micro-app architecture is based on a restriction: All \"components\" must be DOM" +
-              " Nodes, and all extra functionality must be built into those very same objects. With" +
-              " ReactJS every rendered component must be linked to a single DOM Node, so why not just" +
-              " start with the DOM Node and build all our component functionality into that? Voila, no" +
-              " more headaches from immutable value props, the DOM Node has a value and that is all" +
-              " that ever needs to exist."
-          }]
+          tag: "br"
+        }, {
+          tag: "h4",
+          ch: "A micro-app is all of the following:"
+        }, {
+          tag: "br"
+        }, {
+          tag: "ul",
+          style: "",
+          ch: [
+            { tag: "li", ch: "Small (not rendering more than ten thousand items)" },
+            { tag: "li", ch: "Composable (able to be controlled and extended via a simple API)" },
+            { tag: "li", ch: "Embedded (no model, no viewmodel, no virtual DOM, just the real DOM)" }
+          ]
+        }, {
+          tag: "br"
+        }, {
+          tag: "h4",
+          ch: "It's just the DOM"  
+        }, {
+          tag: "br"
+        }, {
+          tag: "p",
+          ch: "The micro-app architecture is based on a restriction: All \"components\" must be DOM" +
+            " Nodes, and all extra functionality must be built into those very same objects. With" +
+            " ReactJS every rendered component must be linked to a single DOM Node, so why not just" +
+            " start with the DOM Node and build all our component functionality into that? Voila, no" +
+            " more headaches from immutable value props, the DOM Node has a value and that is all" +
+            " that ever needs to exist."
         }]
       }]
     }]
