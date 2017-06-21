@@ -1,5 +1,5 @@
 /**
- * protozoa v1.5.2
+ * protozoa v1.6.0
  * MIT License
  * Copyright 2017 Gus Cost
  */
