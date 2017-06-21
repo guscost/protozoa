@@ -1,5 +1,5 @@
 /**
- * protozoa v1.3.1
+ * protozoa v1.4.2
  * MIT License
  * Copyright 2017 Gus Cost
  */
@@ -57,12 +57,12 @@
         var _child = protozoa(child); // Recurse through the tree!
         if (child.ref) { node[child.ref] = _child; }
         return node.appendChild(_child);
-      })
+      });
     };
 
     // Immutable `kernel` property
     Object.defineProperty(_node, 'kernel', {
-      get: function () { return _kernel },
+      get: function () { return _kernel; },
       set: function () { console.error('Cannot mutate kernel!'); }
     });
 
@@ -94,7 +94,7 @@
 
     // That's it??
     return _node;
-  };
+  }
 
   // Module API is just the protozoa function
   return protozoa;
