@@ -1,5 +1,5 @@
 /**
- * protozoa v1.2.1
+ * protozoa v1.2.2
  * MIT License
  * Copyright 2017 Gus Cost
  */
@@ -19,7 +19,7 @@
   var RESERVED_WORDS = /kernel|children|ch/;
   var LEAF_NODES = /string|number|function/;
 
-  // Protozoa is a single recursive function
+  // Protozoa is a recursive function that takes a template tree
   function protozoa (tmpl) {
 
     // Create DOM Node (adapted from https://github.com/intercellular/cell)
@@ -60,10 +60,10 @@
       })
     };
 
-    // Only allow retrieving or running the kernel function
+    // Immutable `kernel` property
     Object.defineProperty(_node, 'kernel', {
       get: function () { return _kernel },
-      set: function () { console.error('Cannot update kernel!'); }
+      set: function () { console.error('Cannot mutate kernel!'); }
     });
 
     // Mutable/magic `children` property (and `ch` alias)
