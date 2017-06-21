@@ -4,7 +4,7 @@ a micro-app generator
 ![protozoa logo](logo.jpg)
 
 ## Usage
-See [demo](https://guscost.github.io/protozoa) and [demo source](https://github.com/guscost/protozoa/index.html) for an ES5 example. The `protozoa` package is also available on NPM.
+See [demo](https://guscost.github.io/protozoa) and [demo source](https://github.com/guscost/protozoa/blob/trunk/index.html) for an ES5 example. The `protozoa` package is also available on NPM.
 
 The protozoa module itself is just one factory function that is called with a template. Calling it looks like this:
 
@@ -46,7 +46,7 @@ The template reserves an additional property: `kernel`. This property is used to
 ### Other properties
 That's pretty much it. All other properties are treated as native [IDL attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Content_versus_IDL_attributes) (with preprocessing for `class`, `className` and `style`). Specifying `class` OR `className` will set the Node's `class` AND `className` attributes. Style has weird behavior and you can't use that property to store arbitrary strings. Anything not used by the browser is fair game for your functions, state objects, or whatever else your Node needs.
 
-See [demo](https://github.com/guscost/protozoa/index.html) for an example using a flux-like message bus.
+See [demo](https://github.com/guscost/protozoa/blob/trunk/index.html) for an example using a flux-like message bus.
 
 ## Concept
 A "micro-app" is a web app that is all of the following:
