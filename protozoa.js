@@ -1,5 +1,5 @@
 /**
- * protozoa v1.3.0
+ * protozoa v1.3.1
  * MIT License
  * Copyright 2017 Gus Cost
  */
@@ -52,11 +52,11 @@
     }
 
     // Recursive kernel describes what to do with nested values or templates
-    var _kernel = tmpl.kernel || function (children) {
+    var _kernel = tmpl.kernel || function (node, children) {
       return children.map(function (child) {
         var _child = protozoa(child); // Recurse through the tree!
-        if (child.ref) { _node[child.ref] = _child; }
-        return _node.appendChild(_child);
+        if (child.ref) { node[child.ref] = _child; }
+        return node.appendChild(_child);
       })
     };
 
@@ -76,7 +76,7 @@
           if (LEAF_NODES.test(typeof value)) { // Can be string/number/function
             return _node.appendChild(protozoa(value)); 
           } else if (Array.isArray(value)) { // Or an array of nested templates
-            _children = _node.kernel(value);
+            _children = _node.kernel(_node, value);
           } else {  
             console.error('Invalid children: ' + value);
           }
