@@ -1,7 +1,5 @@
-# protozoa
+![protozoa](logo.jpg)
 a micro-app generator
-
-![protozoa logo](logo.jpg)
 
 ## Usage
 See [demo](https://guscost.github.io/protozoa) and [demo source](https://github.com/guscost/protozoa/blob/trunk/index.html) for an ES5 example. The `protozoa` package is also available on NPM.

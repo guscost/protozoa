@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" />
 <style>
+  a:focus, a:hover { color: #0392e2; }
+
   @media(max-width: 575px) { 
     .clicker-form { 
       flex-direction: column;
@@ -41,7 +43,7 @@
     class: 'clicker',
 
     // Other attributes are fine
-    style: 'width:100%;padding:16px 0;border-bottom:1px solid #5cb85c',
+    style: 'width:100%;padding:16px 0;border-bottom:1px solid #FFF',
 
     // Init function runs right after the node is created
     init: function () {
@@ -81,36 +83,9 @@
       class: 'form-inline clicker-form',
       style: 'display:flex;',
       ch: [{
-        // This child can be referred to as `$node.labels`
-        // from the containing DOM Node
-        ref: 'labels',
-        class: 'form-group labels',
-        style: 'flex:1;text-align:right;',
-        ch: [
-          {
-            tag: 'label',
-            style: 'font-weight:bold;',
-            ch: 'Clicks:'
-          }, {
-            ref: 'displayCount',
-            tag: 'label',
-            style: 'margin-left:8px;',
-            ch: '0'
-          }, {
-            tag: 'label',
-            style: 'margin-left:16px;font-weight:bold;',
-            ch: 'Latest:'
-          }, {
-            ref: 'displayText',
-            tag: 'label',
-            style: 'margin-left:8px;',
-            ch: ''
-          }
-        ]
-      }, {
         ref: 'inputs',
         class: 'form-group inputs',
-        style: 'width:216px;',
+        style: 'flex:1;',
         ch: [{
           ref: 'demoInput',
           tag: 'input',
@@ -137,6 +112,32 @@
             autotroph.dispatch({ type: 'CLICK' });
           }
         }]
+      }, {
+        // This child can be referred to as `$node.labels`
+        // from the containing DOM Node
+        ref: 'labels',
+        class: 'form-group labels',
+        ch: [
+          {
+            tag: 'label',
+            style: 'font-weight:bold;',
+            ch: 'Latest:'
+          }, {
+            ref: 'displayText',
+            tag: 'label',
+            style: 'margin-left:8px;',
+            ch: ''
+          }, {
+            tag: 'label',
+            style: 'margin-left:16px;font-weight:bold;',
+            ch: 'Clicks:'
+          }, {
+            ref: 'displayCount',
+            tag: 'label',
+            style: 'margin-left:8px;',
+            ch: '0'
+          }
+        ]
       }]
     }]
   };
@@ -146,13 +147,16 @@
   var header = protozoa({
     tag: 'div',
     class: 'jumbotron',
-    style: 'border-radius:0;padding-top:0;',
+    style: 'border-radius:0;padding-top:0;background:#000;color:#FFF;text-align:right;',
     ch: [
       clickerTmpl, {
         tag: 'br'
       }, { 
-        tag: 'h1',
-        ch: 'protozoa'
+        tag: 'img',
+        src: 'logo.svg',
+        style: 'width:300px;'
+      }, {
+        tag: 'br'
       }, {
         tag: 'br'
       }, {
@@ -174,7 +178,7 @@
   var content = protozoa({
     tag: 'div',
     class: 'jumbotron',
-    style: 'border-radius:0;padding-top:32px;background:#F6F6F7;',
+    style: 'border-radius:0;padding-top:32px;',
     ch: [{ 
       tag: 'div',
       ch: [{
