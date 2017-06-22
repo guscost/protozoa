@@ -54,7 +54,7 @@ A "micro-app" is a web app that is all of the following:
 - Embedded (no model, no viewmodel, no virtual DOM, just the real DOM)
 
 ## It's just the DOM
-The micro-app architecture is based on a restriction: All "components" must be DOM Nodes, and all extra functionality must be built into those same objects. With ReactJS every component instance must be linked to a single DOM Node, so why not just start with the DOM Node and build all the component functionality into that? Voila, no more headaches from immutable `value` props, the DOM Node has a value and that's all that ever needs to exist. This package should be mostly compatible back to IE9, but if IDL event or attribute compatibility is an issue, you can set up handlers with jQuery in the init() function instead of using those. 
+The micro-app architecture is based on a restriction: All "components" must be DOM Nodes, and all extra functionality must be built into those same objects. With ReactJS every component instance must be linked to a single DOM Node, so why not just start with the DOM Node and build all the component functionality into that? Bam, no more headaches from immutable `value` props, the DOM Node has a value and that's all that is necessary. This package should be mostly compatible back to IE9, but if IDL event or attribute compatibility is an issue, you can set up handlers with jQuery in the init() function instead of using those. 
 
 Remember back in the day when you could query the DOM and actually *do* something with an element? With this architecture, that's how *everything* works!
 
