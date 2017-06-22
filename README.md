@@ -64,6 +64,6 @@ If you've worked with the real DOM, you should already know that there are signi
 Custom properties on DOM Nodes was looked down on for years probably because of this risk, but we're adults and we can be careful.
 
 ## The real tradeoff is performance
-A complex UI rendered by emptying out containers and dumping in new DOM Nodes means a lot of screen repaints. This architecture should be chosen with the assumption that apps will be smaller and simpler. The `init()` template API makes it easy to only redraw certain parts of an app in response to any kind of state engine, so a UI built in this way can still be optimized. See [metazoa](https://github.com/guscost/metazoa) for a (possibly doomed) attempt to inject DOM-diffing behavior into a protozoa-like framework.
+A complex UI rendered by emptying out containers and dumping in new DOM Nodes means a lot of screen repaints. This architecture should be chosen with the assumption that apps will be smaller and simpler. The `init()` template API makes it easy to only redraw certain parts of an app in response to any kind of state engine, so a UI built in this way can still be optimized. [Metazoa](https://github.com/guscost/metazoa) is an attempt to inject DOM-diffing and other behaviors into a protozoa-like framework.
 
 But sometimes the best solution is to break apart your page into smaller apps that communicate with each other but don't need to keep a huge state in sync with a huge UI. More on this approach soon.
