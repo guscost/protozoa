@@ -1,6 +1,6 @@
 <img src="https://cdn.rawgit.com/guscost/protozoa/trunk/logo-dark.svg" width=300 />
 
-a micro-app generator
+A micro-app generator
 
 ## Usage
 See [demo](https://guscost.github.io/protozoa) and [demo source](https://github.com/guscost/protozoa/blob/trunk/index.html) for an ES5 example. The `protozoa` package is also available on NPM.
