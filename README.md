@@ -50,7 +50,7 @@ See [demo](https://github.com/guscost/protozoa/blob/trunk/index.html) for an exa
 ## Concept
 A "micro-app" is a web app that is all of the following:
 - Small (not rendering more than ten thousand items)
-- Composable (able to be controlled and extended via a simple API)
+- Composable (able to be controlled and extended with a simple API)
 - Embedded (no model, no viewmodel, no virtual DOM, just the real DOM)
 
 ## It's just the DOM
