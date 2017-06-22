@@ -208,12 +208,31 @@
           tag: 'br'
         }, {
           tag: 'p',
-          ch: 'The micro-app architecture is based on a restriction: All "components" must be DOM ' +
-            'Nodes, and all extra functionality must be built into those very same objects. With ' +
-            'ReactJS every rendered component must be linked to a single DOM Node, so why not just ' +
-            'start with the DOM Node and build all our component functionality into that? Voila, no ' +
-            'more headaches from immutable value props, the DOM Node has a value and that is all ' +
-            'that ever needs to exist.'
+          ch: 'The micro-app architecture is based on a restriction: All "components" must be ' +
+            'DOM Nodes, and all extra functionality must be built into those very same ' +
+            'objects. With ReactJS every rendered component must be linked to a single DOM ' +
+            'Node, so why not just start with the DOM Node and build all our component ' +
+            'functionality into that? Bam, no more headaches from immutable value props, the ' +
+            'DOM Node has a value and that\'s all that is necessary.'
+        }, {
+          tag: 'br'
+        }, {
+          tag: 'h4',
+          ch: 'The tradeoff is performance'
+        }, {
+          tag: 'br'  
+        }, {
+          tag: 'p',
+          ch: [
+            'Rendering a complex UI by creating a bunch of new DOM Nodes means a lot of screen ' +
+            'repaints. This architecture should be chosen with the assumption that apps will be ' +
+            'smaller and simpler. The init template makes it easy to set up optimized redrawing ' +
+            'of an app in response to any kind of state update, so a UI built in this way can ' +
+            'still be optimized. ',
+            { tag: 'a', href:'https://github.com/guscost/metazoa', ch:'Metazoa' },
+            ' is an attempt to inject DOM-diffing and other behaviors into a ' +
+            'protozoa-like framework.'
+          ]
         }]
       }]
     }]
