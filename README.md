@@ -49,9 +49,9 @@ See [demo](https://github.com/guscost/protozoa/blob/trunk/index.html) for an exa
 
 ## Concept
 A "micro-app" is a web app that is all of the following:
-- *Small* (not rendering more than ten thousand items)
-- *Composable* (able to be controlled and extended with a simple API)
-- *Embedded* (no model, no viewmodel, no virtual DOM, just the real DOM)
+- **Small** (not rendering more than ten thousand items)
+- **Composable** (able to be controlled and extended with a simple API)
+- **Embedded** (no model, no viewmodel, no virtual DOM, just the real DOM)
 
 ## It's just the DOM
 The micro-app architecture is based on a restriction: All "components" must be DOM Nodes, and all extra functionality must be built into those same objects. With ReactJS every component instance must be linked to a single DOM Node, so why not just start with the DOM Node and build all the component functionality into that? Bam, no more headaches from immutable `value` props, the DOM Node has a value and that's all that is necessary. This package should be mostly compatible back to IE9, but if IDL event or attribute compatibility is an issue, you can set up handlers with jQuery in the init() function instead of using those. 
