@@ -59,7 +59,7 @@ The micro-app architecture is based on a restriction: All "components" must be D
 Remember back in the day when you could query the DOM and actually *do* something with an element? With this architecture, that's how *everything* works!
 
 ## Now with JSX support
-Transpile JSX into valid configuration objects with [ProtozoaTSX](https://github.com/guscost/protozoa-tsx):
+Transpile JSX into valid configuration objects with [Protozoa-TSX](https://github.com/guscost/protozoa-tsx):
 
 ```
 npm install protozoa-tsx
