@@ -58,6 +58,14 @@ The micro-app architecture is based on a restriction: All "components" must be D
 
 Remember back in the day when you could query the DOM and actually *do* something with an element? With this architecture, that's how *everything* works!
 
+## Now with JSX support
+Transpile JSX into valid configuration objects with [ProtozoaTSX](https://github.com/guscost/protozoa-tsx):
+
+```
+npm install protozoa-tsx
+./node_modules/protozoa-tsx/bin/tsc --jsx protozoa input.tsx
+```
+
 ## Safety not guaranteed
 If you've worked with the real DOM, you should already know that there are significant pitfalls with any approach. This way is no different. Careful not to overwrite any important attributes with data, because those are your DOM Nodes!
 
