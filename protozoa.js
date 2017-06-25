@@ -53,11 +53,17 @@
 
     // Recursive kernel describes what to do with nested values or templates
     var _kernel = tmpl.kernel || function (node, children) {
-      return children.map(function (child) {
-        var _child = protozoa(child); // Recurse through the tree!
-        if (child.ref) { node[child.ref] = _child; }
-        return node.appendChild(_child);
-      });
+      // `children` can be an array of nested templates
+      if (Array.isArray(children)) {
+        _children = children.map(function (child) {
+          var _child = protozoa(child); // Recurse through the tree!
+          if (child.ref) { node[child.ref] = _child; }
+          return node.appendChild(_child);
+        });
+      // Or a single template object, or func/string/number
+      } else {
+        return node.appendChild(protozoa(value)); 
+      }
     };
 
     // Immutable `kernel` property
@@ -73,13 +79,7 @@
         get: function () { return _children; },
         set: function (value) {
           _node.innerHTML = '';
-          if (LEAF_NODES.test(typeof value)) { // Can be string/number/function
-            return _node.appendChild(protozoa(value)); 
-          } else if (Array.isArray(value)) { // Or an array of nested templates
-            _children = _node.kernel(_node, value);
-          } else {  
-            console.error('Invalid children: ' + value);
-          }
+          _children = _node.kernel(_node, value);
         }
       });
       Object.defineProperty(_node, 'ch', {

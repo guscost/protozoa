@@ -30,6 +30,22 @@
   // Save a reference to the page div
   var page = document.getElementById('page');
 
+  // Make a flux store to keep some state
+  var store = autotroph.createStore({ 
+    count: 0,
+    text: ''
+  }, function (state, action) {
+    switch (action.type) {
+      case 'CLICK':
+        state.count++;
+        state.text = state.count.toString();
+        return true;
+      case 'TEXT_SET':
+        state.text = action.value;
+        return true;
+    }
+  });
+
   // The `clicker` Node is an interactive DOM Node
   // It uses a flux-like message passing architecture
   var clickerTmpl = {
@@ -47,28 +63,14 @@
 
     // Init function runs right after the node is created
     init: function () {
-      var cmp = this;
-
-      // Embed a flux store in this DOM Node, why not?
-      cmp.store = autotroph.createStore({ 
-        count: 0,
-        text: ''
-      }, function (state, action) {
-        switch (action.type) {
-          case 'CLICK':
-            state.count++;
-            state.text = state.count.toString();
-            return cmp.update();
-          case 'TEXT_SET':
-            state.text = action.value;
-            return cmp.update();
-        }
-      });
+      store.subscribe(this.update.bind(this));
     },
 
     // Define an update function for rendering if you want
+    // This function could just run protozoa again and re-append
+    // But this way we can optimize the DOM updates a bit
     update: function () {
-      var state = this.store.getState();
+      var state = store.getState();
       this.form.labels.displayCount.ch = state.count;
       this.form.labels.displayText.ch = state.text;
       return true;
