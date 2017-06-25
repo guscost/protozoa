@@ -53,16 +53,18 @@
 
     // Recursive kernel describes what to do with nested values or templates
     var _kernel = tmpl.kernel || function (node, children) {
+      // Recurse through the tree!
+      function recurse(child) {
+        var _child = protozoa(child);
+        if (child.ref) { node[child.ref] = _child; }
+        return node.appendChild(_child);
+      }
       // `children` can be an array of nested templates
       if (Array.isArray(children)) {
-        _children = children.map(function (child) {
-          var _child = protozoa(child); // Recurse through the tree!
-          if (child.ref) { node[child.ref] = _child; }
-          return node.appendChild(_child);
-        });
+        return children.map(function (child) { return recurse(child); });
       // Or a single template object, or func/string/number
       } else {
-        return node.appendChild(protozoa(children)); 
+        return recurse(children);
       }
     };
 
