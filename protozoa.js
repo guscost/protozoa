@@ -62,7 +62,7 @@
         });
       // Or a single template object, or func/string/number
       } else {
-        return node.appendChild(protozoa(value)); 
+        return node.appendChild(protozoa(children)); 
       }
     };
 
