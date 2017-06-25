@@ -17,7 +17,6 @@
   // Constants
   var EMPTY_SET = [];
   var RESERVED_WORDS = /kernel|children|ch/;
-  var LEAF_NODES = /string|number|function/;
 
   // Protozoa is a recursive function that takes a template tree
   function protozoa (tmpl) {
@@ -25,9 +24,7 @@
     // Create DOM Node (adapted from https://github.com/intercellular/cell)
     var _node;
     var type = typeof tmpl;
-    if (LEAF_NODES.test(type)) {
-      _node = document.createTextNode(type === 'function' ? tmpl() : tmpl);
-    } else if (type === 'object') {
+    if (type === 'object') {
       if (tmpl.tag === 'svg') {
         _node = document.createElementNS('http://www.w3.org/2000/svg', tmpl.tag);
       } else if (tmpl.namespace) {
@@ -48,7 +45,7 @@
         }
       });
     } else {
-      console.error('Invalid template: ' + tmpl);
+      _node = document.createTextNode(type === 'function' ? tmpl() : tmpl);
     }
 
     // Recursive kernel describes what to do with nested values or templates
@@ -62,7 +59,7 @@
       // `children` can be an array of nested templates
       if (Array.isArray(children)) {
         return children.map(function (child) { return recurse(child); });
-      // Or a single template object, or func/string/number
+      // Or a single template object, or any other value
       } else {
         return recurse(children);
       }
@@ -75,7 +72,7 @@
     });
 
     // Mutable/magic `children` property (and `ch` alias)
-    if (!LEAF_NODES.test(type)) {
+    if (type === 'object') {
       var _children = [];
       Object.defineProperty(_node, 'children', {
         get: function () { return _children; },
