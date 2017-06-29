@@ -19,7 +19,6 @@ var element = protozoa({
 
 ### Template API
 The template API borrows heavily from [cell](https://www.celljs.org/). All properties are optional:
-- `namespace`: the HTML namespace (`<svg>` is automatic)
 - `tag`: the name of the HTML Node to create, if unspecified it will be a `<div>`
 - `ref`: the name of a property that the parent element can access for convenience
 - `init`: a function to run when the Node is created, with the Node as `this`
