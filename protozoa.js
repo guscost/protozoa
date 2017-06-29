@@ -20,28 +20,28 @@
 
   // Protozoa is a recursive function that takes a template tree
   function protozoa (tmpl) {
-    var _node;
+    var $node;
     var type = typeof tmpl;
 
     // Create Text node for everything that isn't a template object
     if (type !== 'object') {
-      _node = document.createTextNode(type === 'function' ? tmpl() : tmpl);
+      $node = document.createTextNode(type === 'function' ? tmpl() : tmpl);
     } else {
 
       // SVG elements need a special namespace
-      _node = tmpl.tag === 'svg' ?
+      $node = tmpl.tag === 'svg' ?
         document.createElementNS('http://www.w3.org/2000/svg', tmpl.tag) :
         document.createElement(tmpl.tag || 'div');
 
       // Set all non-reserved template properties on the DOM node
       Object.getOwnPropertyNames(tmpl).forEach(function (key) {
         if (key === 'class' || key === 'className') {
-          _node.class = tmpl[key];      // Most browsers are OK with `class`
-          _node.className = tmpl[key];  // Safari needs `className`
+          $node.class = tmpl[key];      // Most browsers are OK with `class`
+          $node.className = tmpl[key];  // Safari needs `className`
         } else if (key === 'style') {
-          _node.setAttribute('style', tmpl[key]);  // Style is weird
+          $node.setAttribute('style', tmpl[key]);  // Style is weird
         } else if (!RESERVED_WORDS.test(key)) {
-          _node[key] = tmpl[key];  // Copy anything that isn't reserved
+          $node[key] = tmpl[key];  // Copy anything that isn't reserved
         }
       });
 
@@ -63,33 +63,33 @@
       };
 
       // Immutable `kernel` property
-      Object.defineProperty(_node, 'kernel', {
+      Object.defineProperty($node, 'kernel', {
         get: function () { return _kernel; },
         set: function () { console.error('Cannot mutate kernel!'); }
       });
 
       // Mutable/magic `children` property (and `ch` alias)
       var _children = [];
-      Object.defineProperty(_node, 'children', {
+      Object.defineProperty($node, 'children', {
         get: function () { return _children; },
         set: function (value) {
-          _node.innerHTML = '';
-          _children = _node.kernel(_node, value);
+          $node.innerHTML = '';
+          _children = $node.kernel($node, value);
         }
       });
-      Object.defineProperty(_node, 'ch', {
-        get: function () { return _node.children; },
-        set: function (value) { return _node.children = value; }
+      Object.defineProperty($node, 'ch', {
+        get: function () { return $node.children; },
+        set: function (value) { return $node.children = value; }
       });
 
       // Set `children` and run `init()`
-      _node.children = tmpl.children || tmpl.ch || EMPTY_SET;
-      if (tmpl.init) { _node.init(); }
+      $node.children = tmpl.children || tmpl.ch || EMPTY_SET;
+      if (tmpl.init) { $node.init(); }
 
     }
 
     // That's it??
-    return _node;
+    return $node;
   }
 
   // Module API is just the protozoa function
