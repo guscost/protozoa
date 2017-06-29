@@ -1,5 +1,5 @@
 /**
- * Protozoa v1.7
+ * Protozoa v1.8
  * MIT License
  * Copyright 2017 Gus Cost
  */
@@ -20,20 +20,20 @@
 
   // Protozoa is a recursive function that takes a template tree
   function protozoa (tmpl) {
-
-    // Create DOM Node (adapted from https://github.com/intercellular/cell)
     var _node;
     var type = typeof tmpl;
-    if (type === 'object') {
-      if (tmpl.tag === 'svg') {
-        _node = document.createElementNS('http://www.w3.org/2000/svg', tmpl.tag);
-      } else if (tmpl.namespace) {
-        _node = document.createElementNS(tmpl.namespace, tmpl.tag);
-      } else if (tmpl.tag === 'fragment') {
-        _node = document.createDocumentFragment();
-      } else {
-        _node = document.createElement(tmpl.tag || 'div');
-      }
+
+    // Create Text node for everything that isn't a template object
+    if (type !== 'object') {
+      _node = document.createTextNode(type === 'function' ? tmpl() : tmpl);
+    } else {
+
+      // SVG elements need a special namespace
+      _node = tmpl.tag === 'svg' ?
+        document.createElementNS('http://www.w3.org/2000/svg', tmpl.tag) :
+        document.createElement(tmpl.tag || 'div');
+
+      // Set all non-reserved template properties on the DOM node
       Object.getOwnPropertyNames(tmpl).forEach(function (key) {
         if (key === 'class' || key === 'className') {
           _node.class = tmpl[key];      // Most browsers are OK with `class`
@@ -44,35 +44,31 @@
           _node[key] = tmpl[key];  // Copy anything that isn't reserved
         }
       });
-    } else {
-      _node = document.createTextNode(type === 'function' ? tmpl() : tmpl);
-    }
 
-    // Recursive kernel describes what to do with nested values or templates
-    var _kernel = tmpl.kernel || function (node, children) {
-      // Recurse through the tree!
-      function recurse(child) {
-        var _child = protozoa(child);
-        if (child.ref) { node[child.ref] = _child; }
-        return node.appendChild(_child);
-      }
-      // `children` can be an array of nested templates
-      if (Array.isArray(children)) {
-        return children.map(function (child) { return recurse(child); });
-      // Or a single template object, or any other value
-      } else {
-        return recurse(children);
-      }
-    };
+      // Recursive kernel describes what to do with nested values or templates
+      var _kernel = tmpl.kernel || function (node, children) {
+        // Helper to recurse through the tree!
+        function recurse(child) {
+          var _child = protozoa(child);
+          if (child.ref) { node[child.ref] = _child; }
+          return node.appendChild(_child);
+        }
+        // `children` can be an array of nested templates
+        if (Array.isArray(children)) {
+          return children.map(function (child) { return recurse(child); });
+        // Or a single template object, or any other value
+        } else {
+          return recurse(children);
+        }
+      };
 
-    // Immutable `kernel` property
-    Object.defineProperty(_node, 'kernel', {
-      get: function () { return _kernel; },
-      set: function () { console.error('Cannot mutate kernel!'); }
-    });
+      // Immutable `kernel` property
+      Object.defineProperty(_node, 'kernel', {
+        get: function () { return _kernel; },
+        set: function () { console.error('Cannot mutate kernel!'); }
+      });
 
-    // Mutable/magic `children` property (and `ch` alias)
-    if (type === 'object') {
+      // Mutable/magic `children` property (and `ch` alias)
       var _children = [];
       Object.defineProperty(_node, 'children', {
         get: function () { return _children; },
@@ -89,6 +85,7 @@
       // Set `children` and run `init()`
       _node.children = tmpl.children || tmpl.ch || EMPTY_SET;
       if (tmpl.init) { _node.init(); }
+
     }
 
     // That's it??
