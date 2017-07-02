@@ -19,7 +19,6 @@ var element = protozoa({
 
 ### Template API
 The template API borrows heavily from [cell](https://www.celljs.org/). All properties are optional:
-- `namespace`: the HTML namespace (`<svg>` is automatic)
 - `tag`: the name of the HTML Node to create, if unspecified it will be a `<div>`
 - `ref`: the name of a property that the parent element can access for convenience
 - `init`: a function to run when the Node is created, with the Node as `this`
@@ -57,6 +56,14 @@ A "micro-app" is a web app that is all of the following:
 The micro-app architecture is based on a restriction: All "components" must be DOM Nodes, and all extra functionality must be built into those same objects. With ReactJS every component instance must be linked to a single DOM Node, so why not just start with the DOM Node and build all the component functionality into that? Bam, no more headaches from immutable `value` props, the DOM Node has a value and that's all that is necessary. This package should be mostly compatible back to IE9, but if IDL event or attribute compatibility is an issue, you can set up handlers with jQuery in the init() function instead of using those. 
 
 Remember back in the day when you could query the DOM and actually *do* something with an element? With this architecture, that's how *everything* works!
+
+## Now with JSX support
+Transpile JSX into valid configuration objects with [Protozoa-TSX](https://github.com/guscost/protozoa-tsx):
+
+```
+npm install protozoa-tsx
+./node_modules/protozoa-tsx/bin/tsc --jsx protozoa input.tsx
+```
 
 ## Safety not guaranteed
 If you've worked with the real DOM, you should already know that there are significant pitfalls with any approach. This way is no different. Careful not to overwrite any important attributes with data, because those are your DOM Nodes!
