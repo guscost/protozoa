@@ -46,7 +46,7 @@
     }
   });
 
-  // The `clicker` Node is an interactive DOM Node
+  // The `clicker` node is an interactive DOM node
   // It uses a flux-like message passing architecture
   var clickerTmpl = {
     ref: 'clicker',
@@ -73,11 +73,12 @@
       var state = store.getState();
       this.form.labels.displayCount.ch = state.count;
       this.form.labels.displayText.ch = state.text;
+      this.form.inputs.demoInput.value = state.text;
       return true;
     },
 
-    // The `ch` (or `children`) property exists on generated DOM Nodes
-    // Changing this property will rebuild the Node's innerHTML
+    // The `ch` (or `children`) property exists on generated DOM nodes
+    // Changing this property will rebuild the node's innerHTML
     // NOTE: Inline styles are for clarity, usually don't do this
     ch: [{
       ref: 'form',
@@ -116,7 +117,7 @@
         }]
       }, {
         // This child can be referred to as `$node.labels`
-        // from the containing DOM Node
+        // from the containing DOM node
         ref: 'labels',
         class: 'form-group labels',
         ch: [
@@ -145,7 +146,7 @@
   };
 
 
-  // The `header` variable will refer to a header DOM Node
+  // The `header` variable will refer to a header DOM node
   var header = protozoa({
     tag: 'div',
     class: 'jumbotron',
@@ -190,7 +191,7 @@
     };
   }
 
-  // The `content` Node has additional content
+  // The `content` node has additional content
   var content = protozoa({
     tag: 'div',
     class: 'jumbotron',
@@ -224,11 +225,11 @@
         }, {
           tag: 'p',
           ch: 'The micro-app architecture is based on a restriction: All "components" must be ' +
-            'DOM Nodes, and all extra functionality must be built into those very same ' +
+            'DOM nodes, and all extra functionality must be built into those very same ' +
             'objects. With ReactJS every rendered component must be linked to a single DOM ' +
-            'Node, so why not just start with the DOM Node and build all our component ' +
+            'node, so why not just start with the DOM node and build all our component ' +
             'functionality into that? Bam, no more headaches from immutable value props, the ' +
-            'DOM Node has a value and that\'s all that is necessary.'
+            'DOM node has a value and that\'s all that is necessary.'
         }, {
           tag: 'br'
         }, {
@@ -239,7 +240,7 @@
         }, {
           tag: 'p',
           ch: [
-            'Rendering a complex UI by creating a bunch of new DOM Nodes means a lot of screen ' +
+            'Rendering a complex UI by creating a bunch of new DOM nodes means a lot of screen ' +
             'repaints. This architecture should be chosen with the assumption that apps will be ' +
             'smaller and simpler. The init template makes it easy to set up optimized redrawing ' +
             'of an app in response to any kind of state update, so a UI built in this way can ' +
