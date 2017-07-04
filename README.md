@@ -38,6 +38,8 @@ Container DOM Nodes returned by `protozoa` have a special array property `childr
 element.children = ['Something Else'];
 ```
 
+Don't ever run `element.children.push()` or anything like that, always assign a new array or value.
+
 ### Advanced API
 The template reserves an additional property: `kernel`. This property is used to set or retrieve the immutable kernel function that protozoa uses to walk recursively through a nested spec. If you didn't understand the previous sentence, you should probably leave it alone.
 
